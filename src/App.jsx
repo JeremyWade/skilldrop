@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { IDKitWidget } from '@worldcoin/idkit';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [verified, setVerified] = useState(false);
+  const [completed, setCompleted] = useState(false);
+
+  const handleProof = (proof) => {
+    console.log('Verified proof:', proof);
+    setVerified(true);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main style={{ padding: '2rem', fontFamily: 'sans-serif', textAlign: 'center' }}>
+      <h1>SkillDrop</h1>
+      {!verified ? (
+        <IDKitWidget
+          app_id="app_ba2c7b4a8490c8f0b82328cf81e02cda"
+          action="skilldrop-demo"
+          signal="user"
+          onSuccess={handleProof}
+        >
+          {({ open }) => <button onClick={open}>Verify with World ID</button>}
+        </IDKitWidget>
+      ) : !completed ? (
+        <>
+          <p>What’s one benefit of AI in education?</p>
+          <button onClick={() => setCompleted(true)}>Submit Answer</button>
+        </>
+      ) : (
+        <p>✅ You earned 1 WLD! (Simulated)</p>
+      )}
+    </main>
+  );
 }
-
-export default App
